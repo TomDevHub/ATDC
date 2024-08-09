@@ -1,3 +1,5 @@
+#this file uses tensorflow to train a model to read handwritten numbers
+
 import numpy as np
 import cv2
 import matplotlib.pyplot as plt
