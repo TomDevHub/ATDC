@@ -14,9 +14,10 @@ IMAGE_SIZE = 256
 def load_labels(filename):
     df = pd.read_csv(filename)
     print("Loaded CSV with columns:", df.columns)
+    df.columns = [col.strip() for col in df.columns]  # Clean column names
+    print("Cleaned column names:", df.columns)
     print(df.head())  # Print the first few rows to check the data
     return df
-
 
 # Load image and process
 def load_and_process_image(image_path):
@@ -42,23 +43,28 @@ def create_model():
     model.compile(optimizer='adam', loss='mse', metrics=['mae'])
     return model
 
+# Example of an absolute path - modify this to match your specific environment
+base_directory = 'C:/Users/thoma/ATDC/ATDC'
+image_directory = os.path.join(base_directory, 'train_images')
+
 # Load all data
 def load_data():
     images, labels = [], []
-    train_labels = load_labels('train_labels.csv')
-    train_labels.columns = [col.strip() for col in train_labels.columns]  # Clean column names
-    print("Cleaned column names:", train_labels.columns)  # Debugging print
-
+    train_labels = load_labels(os.path.join(base_directory, 'train_labels.csv'))
     for index, row in train_labels.iterrows():
-        image_file = f"{row.get('Pothole number', 'default_id')}.jpg"  # Assuming 'Pothole number' is the column name
-        image_path = os.path.join('./train_images', image_file)  # Correct path
+        image_file = f"p{int(row['Pothole number'])}.jpg"
+        image_path = os.path.join(image_directory, image_file)
+        
         if os.path.exists(image_path):
             image = load_and_process_image(image_path)
             if image is not None:
                 images.append(image)
-                labels.append(row.get('Bags used', 0))
+                labels.append(row['Bags used'])
+            else:
+                print(f'Image {image_file} could not be processed.')
+        else:
+            print(f'Image {image_file} not found at {image_path}. Skipping...')
     return np.array(images), np.array(labels)
-
 
 # Main execution function
 def main():
