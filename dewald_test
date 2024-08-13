@@ -54,14 +54,52 @@ def load_x_data(filename, y_train):
       line = f.readline()
       object_params.append(separate_values(line))
   return object_params
+
+
+#PREPARE DATA FOR ML MODEL
+def format_y_data(y_data):
+  y_train = []
+  for i in y_data:
+    y_train.append(i[1])
+  return y_train
+
+def prepare_data(x_data, y_data):
+  y_train = format_y_data(y_data)
+
+  x_train = np.array(x_data)
+  y_train = np.array(y_data)
+  return x_train, y_train
+
+
+#MACHINE LEARNING MODEL
+def create_model():
+  model = tf.keras.models.Sequential()
+  model.add(tf.keras.layers.Input(shape=(4,)))
+  model.add(tf.keras.layers.Dense(128, activation='relu'))
+  model.add(tf.keras.layers.Dense(128, activation='relu'))
+  model.add(tf.keras.layers.Dense(1, activation='linear'))
+  return model
+
+
+def train_model(x_data, y_data):
+  x_train, y_train = prepare_data(x_data, y_data)
+  
+  model = create_model()
+  model.compile(optimizer='adam', loss='mse', metrics=['accuracy'])
+  model.fit(x_train, y_train, epochs=10)
+  model.save('predict_bags.keras')
       
 
 
-#MAIN FUNCTION
-def main():
-    y_train = load_y_data(TRAIN_LABELS_LOCATION)
-    load_x_data(TRAIN_ANNOTATION_LOCATION, y_train)
+# Main execution function
 
+def main():
+    # Load data
+    #x_train = load_x_data(TRAIN_ANNOTATIONS_LOCATION)
+    y_train = load_y_data(TRAIN_LABELS_LOCATION)
+    x_train = load_x_data(TRAIN_ANNOTATION_LOCATION, y_train)
+
+    train_model(x_train, y_train)
 
 if __name__ == "__main__":
     main()
