@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-import tensorflow.keras as tf
+#import tensorflow as tf
 import cv2
 import matplotlib.pyplot as plt
 import os
@@ -10,7 +10,7 @@ import os
 #CONSTANTS
 TRAIN_LABELS_LOCATION = '/content/drive/MyDrive/Colab Notebooks/Patch Perfect Data/train_labels.csv'
 TRAIN_IMAGES_LOCATION = '/content/drive/MyDrive/Colab Notebooks/Patch Perfect Data/train_images/'
-
+TRAIN_ANNOTATION_LOCATION = '/content/drive/MyDrive/Colab Notebooks/Patch Perfect Data/train_annotations/'
 
 
 
@@ -19,7 +19,7 @@ def load_labels(filename):
     df = pd.read_csv(filename)
     print(df.head())
     return df
-    
+
 
 def load_y_data(filename):
     df = load_labels(filename)
@@ -32,24 +32,37 @@ def load_y_data(filename):
       #pothole_number.append(df.iat[i,0])
       #bags_used.append(df.iat[i,1])
       y_train.append((df.iat[i,0], df.iat[i,1]))
-    
+
     #return pothole_number, bags_used
     return y_train
 
 
-#Load x Data (functions)
-def load_x_data(filename):
-  #still working on it
+#LOAD Y DATA (FUNCTIONS)
+def separate_values(line):
+  float_string = line
+  float_list = list(map(float, float_string.split()[1:]))
+  float_tuple = tuple(float_list)
+  print(float_tuple)
+  return float_tuple
 
 
 
-# Main execution function
+def load_x_data(filename, y_train):
+  object_params = []
+  for i in y_train:
+    with open(f"{filename}p{y_train[0][0]}.txt",'r') as f:
+      line = f.readline()
+      object_params.append(separate_values(line))
+  return object_params
+      
+
+
+#MAIN FUNCTION
 def main():
     # Load data
-    x_train = load_x_data(TRAIN_ANNOTATIONS_LOCATION)
+    #x_train = load_x_data(TRAIN_ANNOTATIONS_LOCATION)
     y_train = load_y_data(TRAIN_LABELS_LOCATION)
-    
-
+    load_x_data(TRAIN_ANNOTATION_LOCATION, y_train)
 
 
 if __name__ == "__main__":
