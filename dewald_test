@@ -59,8 +59,6 @@ def load_x_data(filename, y_train):
 
 #MAIN FUNCTION
 def main():
-    # Load data
-    #x_train = load_x_data(TRAIN_ANNOTATIONS_LOCATION)
     y_train = load_y_data(TRAIN_LABELS_LOCATION)
     load_x_data(TRAIN_ANNOTATION_LOCATION, y_train)
 
