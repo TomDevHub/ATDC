@@ -23,17 +23,12 @@ def load_labels(filename):
 
 def load_y_data(filename):
     df = load_labels(filename)
-    #pothole_number = []
-    #bags_used = []
     y_train = []
 
     column_range = df['Pothole number'].count()
     for i in range(0,column_range-1):
-      #pothole_number.append(df.iat[i,0])
-      #bags_used.append(df.iat[i,1])
       y_train.append((df.iat[i,0], df.iat[i,1]))
 
-    #return pothole_number, bags_used
     return y_train
 
 
@@ -91,8 +86,7 @@ def train_model(x_data, y_data):
       
 
 
-# Main execution function
-
+# MAIN EXECUTION FUNCTION
 def main():
     # Load data
     #x_train = load_x_data(TRAIN_ANNOTATIONS_LOCATION)
