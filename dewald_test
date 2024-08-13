@@ -1,8 +1,57 @@
+import pandas as pd
 import numpy as np
+import tensorflow.keras as tf
 import cv2
 import matplotlib.pyplot as plt
-import tensorflow as tf
 import os
 
 
 
+#CONSTANTS
+TRAIN_LABELS_LOCATION = '/content/drive/MyDrive/Colab Notebooks/Patch Perfect Data/train_labels.csv'
+TRAIN_IMAGES_LOCATION = '/content/drive/MyDrive/Colab Notebooks/Patch Perfect Data/train_images/'
+
+
+
+
+#LOAD Y DATA (functions)
+def load_labels(filename):
+    df = pd.read_csv(filename)
+    print(df.head())
+    return df
+    
+
+def load_y_data(filename):
+    df = load_labels(filename)
+    #pothole_number = []
+    #bags_used = []
+    y_train = []
+
+    column_range = df['Pothole number'].count()
+    for i in range(0,column_range-1):
+      #pothole_number.append(df.iat[i,0])
+      #bags_used.append(df.iat[i,1])
+      y_train.append((df.iat[i,0], df.iat[i,1]))
+    
+    #return pothole_number, bags_used
+    return y_train
+
+
+#Load x Data (functions)
+def load_x_data(filename):
+  #still working on it
+
+
+
+# Main execution function
+def main():
+    # Load data
+    x_train = load_x_data(TRAIN_ANNOTATIONS_LOCATION)
+    y_train = load_y_data(TRAIN_LABELS_LOCATION)
+    
+
+
+
+if __name__ == "__main__":
+    main()
+    
