@@ -6,7 +6,6 @@ import matplotlib.pyplot as plt
 import os
 
 
-
 #CONSTANTS
 TRAIN_LABELS_LOCATION = '/content/drive/MyDrive/Colab Notebooks/Patch Perfect Data/train_labels.csv'
 TRAIN_IMAGES_LOCATION = '/content/drive/MyDrive/Colab Notebooks/Patch Perfect Data/train_images/'
